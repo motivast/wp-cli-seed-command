@@ -1,0 +1,322 @@
+version: 2
+jobs:
+  inspect:
+    docker:
+      - image: circleci/php:7.3-buster
+    steps:
+      - checkout
+      - run: composer install
+      - run: composer run inspect
+
+  tests-php7.0:
+    docker:
+      - image: circleci/php:7.0-buster
+      - image: circleci/mysql:8.0
+        environment:
+          MYSQL_DATABASE: wordpress
+          MYSQL_USER: wordpress
+          MYSQL_ROOT_PASSWORD: secret
+          MYSQL_PASSWORD: secret
+        command: mysqld --default-authentication-plugin=mysql_native_password
+    environment:
+      DB_NAME: wordpress
+      DB_USER: wordpress
+      DB_PASSWORD: secret
+      DB_HOST: 127.0.0.1
+    steps:
+      - checkout
+      - run:
+          name: Waiting for MySQL to be ready
+          command: sleep 10
+      - run:
+          name: Install MySQL CLI
+          command: sudo apt-get update && sudo apt-get install default-mysql-client && sudo docker-php-ext-install mysqli
+      - run:
+          name: Provide PHP development configuration
+          command: sudo cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
+      - run: composer install
+      - run: composer run wp:reset
+      - run: composer run tests
+
+  tests-php7.1:
+    docker:
+      - image: circleci/php:7.1-buster
+      - image: circleci/mysql:8.0
+        environment:
+          MYSQL_DATABASE: wordpress
+          MYSQL_USER: wordpress
+          MYSQL_ROOT_PASSWORD: secret
+          MYSQL_PASSWORD: secret
+        command: mysqld --default-authentication-plugin=mysql_native_password
+    environment:
+      DB_NAME: wordpress
+      DB_USER: wordpress
+      DB_PASSWORD: secret
+      DB_HOST: 127.0.0.1
+    steps:
+      - checkout
+      - run:
+          name: Waiting for MySQL to be ready
+          command: sleep 10
+      - run:
+          name: Install MySQL CLI
+          command: sudo apt-get update && sudo apt-get install default-mysql-client && sudo docker-php-ext-install mysqli
+      - run:
+          name: Provide PHP development configuration
+          command: sudo cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
+      - run: composer install
+      - run: composer run wp:reset
+      - run: composer run tests
+
+  tests-php7.2:
+    docker:
+      - image: circleci/php:7.2-buster
+      - image: circleci/mysql:8.0
+        environment:
+          MYSQL_DATABASE: wordpress
+          MYSQL_USER: wordpress
+          MYSQL_ROOT_PASSWORD: secret
+          MYSQL_PASSWORD: secret
+        command: mysqld --default-authentication-plugin=mysql_native_password
+    environment:
+      DB_NAME: wordpress
+      DB_USER: wordpress
+      DB_PASSWORD: secret
+      DB_HOST: 127.0.0.1
+    steps:
+      - checkout
+      - run:
+          name: Waiting for MySQL to be ready
+          command: sleep 10
+      - run:
+          name: Install MySQL CLI
+          command: sudo apt-get update && sudo apt-get install default-mysql-client && sudo docker-php-ext-install mysqli
+      - run:
+          name: Provide PHP development configuration
+          command: sudo cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
+      - run: composer install
+      - run: composer run wp:reset
+      - run: composer run tests
+
+  tests-php7.3:
+    docker:
+      - image: circleci/php:7.3-buster
+      - image: circleci/mysql:8.0
+        environment:
+          MYSQL_DATABASE: wordpress
+          MYSQL_USER: wordpress
+          MYSQL_ROOT_PASSWORD: secret
+          MYSQL_PASSWORD: secret
+        command: mysqld --default-authentication-plugin=mysql_native_password
+    environment:
+      DB_NAME: wordpress
+      DB_USER: wordpress
+      DB_PASSWORD: secret
+      DB_HOST: 127.0.0.1
+    steps:
+      - checkout
+      - run:
+          name: Waiting for MySQL to be ready
+          command: sleep 10
+      - run:
+          name: Install MySQL CLI
+          command: sudo apt-get update && sudo apt-get install default-mysql-client && sudo docker-php-ext-install mysqli
+      - run:
+          name: Provide PHP development configuration
+          command: sudo cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
+      - run: composer install
+      - run: composer run wp:reset
+      - run: composer run tests
+
+  tests-wp5.0:
+    docker:
+      - image: circleci/php:7.3-buster
+      - image: circleci/mysql:8.0
+        environment:
+          MYSQL_DATABASE: wordpress
+          MYSQL_USER: wordpress
+          MYSQL_ROOT_PASSWORD: secret
+          MYSQL_PASSWORD: secret
+        command: mysqld --default-authentication-plugin=mysql_native_password
+    environment:
+      DB_NAME: wordpress
+      DB_USER: wordpress
+      DB_PASSWORD: secret
+      DB_HOST: 127.0.0.1
+    steps:
+      - checkout
+      - run:
+          name: Waiting for MySQL to be ready
+          command: sleep 10
+      - run:
+          name: Install MySQL CLI
+          command: sudo apt-get update && sudo apt-get install default-mysql-client && sudo docker-php-ext-install mysqli
+      - run:
+          name: Provide PHP development configuration
+          command: sudo cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
+      - run: composer install
+      - run: composer require roots/wordpress:5.0
+      - run: composer run wp:reset
+      - run: composer run tests
+
+  tests-wp5.1:
+    docker:
+      - image: circleci/php:7.3-buster
+      - image: circleci/mysql:8.0
+        environment:
+          MYSQL_DATABASE: wordpress
+          MYSQL_USER: wordpress
+          MYSQL_ROOT_PASSWORD: secret
+          MYSQL_PASSWORD: secret
+        command: mysqld --default-authentication-plugin=mysql_native_password
+    environment:
+      DB_NAME: wordpress
+      DB_USER: wordpress
+      DB_PASSWORD: secret
+      DB_HOST: 127.0.0.1
+    steps:
+      - checkout
+      - run:
+          name: Waiting for MySQL to be ready
+          command: sleep 10
+      - run:
+          name: Install MySQL CLI
+          command: sudo apt-get update && sudo apt-get install default-mysql-client && sudo docker-php-ext-install mysqli
+      - run:
+          name: Provide PHP development configuration
+          command: sudo cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
+      - run: composer install
+      - run: composer require roots/wordpress:5.1
+      - run: composer run wp:reset
+      - run: composer run tests
+
+  tests-wp5.2:
+    docker:
+      - image: circleci/php:7.3-buster
+      - image: circleci/mysql:8.0
+        environment:
+          MYSQL_DATABASE: wordpress
+          MYSQL_USER: wordpress
+          MYSQL_ROOT_PASSWORD: secret
+          MYSQL_PASSWORD: secret
+        command: mysqld --default-authentication-plugin=mysql_native_password
+    environment:
+      DB_NAME: wordpress
+      DB_USER: wordpress
+      DB_PASSWORD: secret
+      DB_HOST: 127.0.0.1
+    steps:
+      - checkout
+      - run:
+          name: Waiting for MySQL to be ready
+          command: sleep 10
+      - run:
+          name: Install MySQL CLI
+          command: sudo apt-get update && sudo apt-get install default-mysql-client && sudo docker-php-ext-install mysqli
+      - run:
+          name: Provide PHP development configuration
+          command: sudo cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
+      - run: composer install
+      - run: composer require roots/wordpress:5.2
+      - run: composer run wp:reset
+      - run: composer run tests
+
+  tests-wp5.3:
+    docker:
+      - image: circleci/php:7.3-buster
+      - image: circleci/mysql:8.0
+        environment:
+          MYSQL_DATABASE: wordpress
+          MYSQL_USER: wordpress
+          MYSQL_ROOT_PASSWORD: secret
+          MYSQL_PASSWORD: secret
+        command: mysqld --default-authentication-plugin=mysql_native_password
+    environment:
+      DB_NAME: wordpress
+      DB_USER: wordpress
+      DB_PASSWORD: secret
+      DB_HOST: 127.0.0.1
+    steps:
+      - checkout
+      - run:
+          name: Waiting for MySQL to be ready
+          command: sleep 10
+      - run:
+          name: Install MySQL CLI
+          command: sudo apt-get update && sudo apt-get install default-mysql-client && sudo docker-php-ext-install mysqli
+      - run:
+          name: Provide PHP development configuration
+          command: sudo cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
+      - run: composer install
+      - run: composer require roots/wordpress:5.3
+      - run: composer run wp:reset
+      - run: composer run tests
+
+  tests-wp-latest:
+    docker:
+      - image: circleci/php:7.3-buster
+      - image: circleci/mysql:8.0
+        environment:
+          MYSQL_DATABASE: wordpress
+          MYSQL_USER: wordpress
+          MYSQL_ROOT_PASSWORD: secret
+          MYSQL_PASSWORD: secret
+        command: mysqld --default-authentication-plugin=mysql_native_password
+    environment:
+      DB_NAME: wordpress
+      DB_USER: wordpress
+      DB_PASSWORD: secret
+      DB_HOST: 127.0.0.1
+    steps:
+      - checkout
+      - run:
+          name: Waiting for MySQL to be ready
+          command: sleep 10
+      - run:
+          name: Install MySQL CLI
+          command: sudo apt-get update && sudo apt-get install default-mysql-client && sudo docker-php-ext-install mysqli
+      - run:
+          name: Provide PHP development configuration
+          command: sudo cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
+      - run: composer install
+      - run: composer require roots/wordpress
+      - run: composer run wp:reset
+      - run: composer run tests
+
+
+workflows:
+  version: 2
+  inspect_and_test:
+    triggers:
+      - schedule:
+          cron: "0 3 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - inspect
+      - tests-php7.1:
+          requires:
+            - inspect
+      - tests-php7.2:
+          requires:
+            - inspect
+      - tests-php7.3:
+          requires:
+            - inspect
+      - tests-wp5.0:
+          requires:
+            - inspect
+      - tests-wp5.1:
+          requires:
+            - inspect
+      - tests-wp5.2:
+          requires:
+            - inspect
+      - tests-wp5.3:
+          requires:
+            - inspect
+      - tests-wp-latest:
+          requires:
+            - inspect

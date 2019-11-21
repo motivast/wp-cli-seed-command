@@ -1,0 +1,14 @@
+<ruleset name="WordPress">
+
+    <config name="installed_paths" value="vendor/wp-coding-standards/wpcs" />
+
+    <description>WordPress</description>
+
+    <!-- Run against the WordPress ruleset -->
+    <rule ref="WordPress" />
+
+    <file>./../src</file>
+
+    <exclude-pattern>index.php</exclude-pattern>
+
+</ruleset>

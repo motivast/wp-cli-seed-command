@@ -1,0 +1,34 @@
+version: '3'
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: ./docker/app.dockerfile
+    volumes:
+      - ./:/var/www:cached
+    working_dir: /var/www
+
+  web:
+    build:
+      context: ./
+      dockerfile: ./docker/web.dockerfile
+    ports:
+      - 8080:80
+    volumes:
+      - ./:/var/www:cached
+    working_dir: /var/www
+
+  database:
+    image: mysql:5.7
+    volumes:
+      - dbdata:/var/lib/mysql:cached
+    environment:
+      - "MYSQL_DATABASE=wordpress"
+      - "MYSQL_USER=wordpress"
+      - "MYSQL_PASSWORD=secret"
+      - "MYSQL_ROOT_PASSWORD=secret"
+    ports:
+      - "33061:3306"
+
+volumes:
+  dbdata:

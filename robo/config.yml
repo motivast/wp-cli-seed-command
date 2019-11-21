@@ -1,0 +1,12 @@
+# Config used for build tasks by RoboFile.php
+root_dir: "."
+
+build:
+  dir: "${root_dir}/build"
+  repository: "git@github.com:motivast/wp-cli-seed-command.git"
+
+wp:
+  title: "WP CLI Seeder Command"
+  theme: "twentynineteen"
+  core:
+    dir: "${root_dir}/wordpress"

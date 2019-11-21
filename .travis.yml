@@ -1,0 +1,59 @@
+language: php
+
+php:
+  - 7.1
+  - 7.2
+  - 7.3
+
+services:
+  - docker
+
+env:
+  DOCKER_COMPOSE_VERSION: 1.24.1
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+before_install:
+  # Download and install own version of docker compose
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+
+before_script:
+  # Execute docker version script to find out about possible problems
+  - docker version
+  # Execute docker-compose version script to find out about possible problems
+  - docker-compose version
+  # Build docker containers before each script
+  - docker-compose build --build-arg PHP_VERSION=$TRAVIS_PHP_VERSION
+  # Start docker composer before each script
+  - docker-compose up -d
+  # Fore some reason travis is changing ownership to some unknown user. Change
+  # it back to default www-data.
+  - docker-compose exec -T app chown -R www-data:www-data .
+  # Wait until all services like MySQL will start
+  - sleep 10
+
+after_script:
+  # Shutdown docker composer after each script
+  - docker-compose down
+
+install:
+  - composer install --ignore-platform-reqs
+
+jobs:
+  include:
+    - stage: Inspect
+      php: 7.3
+      script:
+        - docker-compose exec --user=www-data -T app composer run inspect
+    - stage: Tests
+      before_script: docker-compose exec --user=www-data -T app composer run wp:reset
+      script: docker-compose exec --user=www-data -T app composer run tests
+
+stages:
+  - Inspect
+  - Tests
