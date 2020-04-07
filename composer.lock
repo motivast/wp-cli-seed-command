@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e1954a2692790a217c46d8b414cbf75a",
+    "content-hash": "fca988b5c4e973f3e7c82ea37229dbc1",
     "packages": [
         {
             "name": "cweagans/composer-patches",
@@ -2243,8 +2243,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/WordPress/WordPress/zipball/5.3",
-                "reference": "5.3",
-                "shasum": null
+                "reference": "5.3"
             },
             "require": {
                 "php": ">=5.3.2",
