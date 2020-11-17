@@ -286,7 +286,7 @@ jobs:
 
 workflows:
   version: 2
-  inspect_and_test:
+  scheduled_inspect_and_test:
     triggers:
       - schedule:
           cron: "0 3 * * *"
@@ -294,6 +294,34 @@ workflows:
             branches:
               only:
                 - master
+    jobs:
+      - inspect
+      - tests-php7.1:
+          requires:
+            - inspect
+      - tests-php7.2:
+          requires:
+            - inspect
+      - tests-php7.3:
+          requires:
+            - inspect
+      - tests-wp5.0:
+          requires:
+            - inspect
+      - tests-wp5.1:
+          requires:
+            - inspect
+      - tests-wp5.2:
+          requires:
+            - inspect
+      - tests-wp5.3:
+          requires:
+            - inspect
+      - tests-wp-latest:
+          requires:
+            - inspect
+
+  inspect_and_test:
     jobs:
       - inspect
       - tests-php7.1:
