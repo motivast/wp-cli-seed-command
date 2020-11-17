@@ -8,36 +8,6 @@ jobs:
       - run: composer install
       - run: composer run inspect
 
-  tests-php7.0:
-    docker:
-      - image: circleci/php:7.0-buster
-      - image: circleci/mysql:8.0
-        environment:
-          MYSQL_DATABASE: wordpress
-          MYSQL_USER: wordpress
-          MYSQL_ROOT_PASSWORD: secret
-          MYSQL_PASSWORD: secret
-        command: mysqld --default-authentication-plugin=mysql_native_password
-    environment:
-      DB_NAME: wordpress
-      DB_USER: wordpress
-      DB_PASSWORD: secret
-      DB_HOST: 127.0.0.1
-    steps:
-      - checkout
-      - run:
-          name: Waiting for MySQL to be ready
-          command: sleep 10
-      - run:
-          name: Install MySQL CLI
-          command: sudo apt-get update && sudo apt-get install default-mysql-client && sudo docker-php-ext-install mysqli
-      - run:
-          name: Provide PHP development configuration
-          command: sudo cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
-      - run: composer install
-      - run: composer run wp:reset
-      - run: composer run tests
-
   tests-php7.1:
     docker:
       - image: circleci/php:7.1-buster
@@ -64,7 +34,7 @@ jobs:
       - run:
           name: Provide PHP development configuration
           command: sudo cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
-      - run: composer install
+      - run: composer install --ignore-platform-reqs
       - run: composer run wp:reset
       - run: composer run tests
 
@@ -128,9 +98,39 @@ jobs:
       - run: composer run wp:reset
       - run: composer run tests
 
+  tests-php7.4:
+    docker:
+      - image: circleci/php:7.4-buster
+      - image: circleci/mysql:8.0
+        environment:
+          MYSQL_DATABASE: wordpress
+          MYSQL_USER: wordpress
+          MYSQL_ROOT_PASSWORD: secret
+          MYSQL_PASSWORD: secret
+        command: mysqld --default-authentication-plugin=mysql_native_password
+    environment:
+      DB_NAME: wordpress
+      DB_USER: wordpress
+      DB_PASSWORD: secret
+      DB_HOST: 127.0.0.1
+    steps:
+      - checkout
+      - run:
+          name: Waiting for MySQL to be ready
+          command: sleep 10
+      - run:
+          name: Install MySQL CLI
+          command: sudo apt-get update && sudo apt-get install default-mysql-client && sudo docker-php-ext-install mysqli
+      - run:
+          name: Provide PHP development configuration
+          command: sudo cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
+      - run: composer install
+      - run: composer run wp:reset
+      - run: composer run tests
+
   tests-wp5.0:
     docker:
-      - image: circleci/php:7.3-buster
+      - image: circleci/php:7.4-buster
       - image: circleci/mysql:8.0
         environment:
           MYSQL_DATABASE: wordpress
@@ -161,7 +161,7 @@ jobs:
 
   tests-wp5.1:
     docker:
-      - image: circleci/php:7.3-buster
+      - image: circleci/php:7.4-buster
       - image: circleci/mysql:8.0
         environment:
           MYSQL_DATABASE: wordpress
@@ -192,7 +192,7 @@ jobs:
 
   tests-wp5.2:
     docker:
-      - image: circleci/php:7.3-buster
+      - image: circleci/php:7.4-buster
       - image: circleci/mysql:8.0
         environment:
           MYSQL_DATABASE: wordpress
@@ -223,7 +223,7 @@ jobs:
 
   tests-wp5.3:
     docker:
-      - image: circleci/php:7.3-buster
+      - image: circleci/php:7.4-buster
       - image: circleci/mysql:8.0
         environment:
           MYSQL_DATABASE: wordpress
@@ -254,7 +254,7 @@ jobs:
 
   tests-wp-latest:
     docker:
-      - image: circleci/php:7.3-buster
+      - image: circleci/php:7.4-buster
       - image: circleci/mysql:8.0
         environment:
           MYSQL_DATABASE: wordpress
@@ -305,9 +305,12 @@ workflows:
       - tests-php7.3:
           requires:
             - inspect
-      - tests-wp5.0:
+      - tests-php7.4:
           requires:
             - inspect
+      - tests-wp5.0:
+          requires:
+            -4inspect
       - tests-wp5.1:
           requires:
             - inspect
@@ -331,6 +334,9 @@ workflows:
           requires:
             - inspect
       - tests-php7.3:
+          requires:
+            - inspect
+      - tests-php7.4:
           requires:
             - inspect
       - tests-wp5.0:

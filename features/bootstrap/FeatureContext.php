@@ -163,7 +163,7 @@ class FeatureContext implements Context
      */
     public function stdoutShouldContain(PyStringNode $string)
     {
-        $stdout = join( $this->output, PHP_EOL );
+        $stdout = join( PHP_EOL, $this->output );
 
         Assert::assertEquals($string, $stdout);
     }
