@@ -1,7 +1,7 @@
 {
     "name": "motivast/wp-cli-seed-command",
     "type": "wp-cli-package",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "WP CLI Seed Command is an extension for WP-CLI to seed database with sample data",
     "homepage": "https://github.com/motivast/wp-cli-seed-command",
     "license": "MIT",
